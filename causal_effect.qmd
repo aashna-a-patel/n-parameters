@@ -11,6 +11,9 @@ execute:
 #| message: false
 library(tidyverse)
 library(primer.data)
+library(brms)
+library(tidybayes)
+library(gtsummary)
 ```
 
 ```{r}
@@ -44,4 +47,13 @@ geom_jitter(alpha = 0.03, height = 0.1) +
     caption = "Random sample of 5% of the data from Gerber, Green, and Larimer(2008)")
 ```
 
-I am analyzing the "shaming" dataset from Gerber, Green, and Larimer (2008) to determine the causal effect of postcards on voter turnout in the 2006 primary election and how it varies with political engagement. One problem with this approach is the potential influence of unmeasured confounders, such as personal motivation or local political events, that could affect both the likelihood of receiving a postcard and the decision to vote.
+I am analyzing the "shaming" dataset from Gerber, Green, and Larimer (2008) to determine the causal effect of postcards on voter turnout in the 2006 primary election and how it varies with political engagement. Using a Bayesian logistic regression model, I estimate `voted` as a function of `age_z`, `sex`, `treatment`, `voter_class`, and their interaction. The results indicate that the "Neighbors" treatment increases voting probability for "Always Vote" individuals, with a 95% credible interval to measure uncertainty.
+
+```{r}
+#| label: model
+#| cache: true
+
+fit_postcard_vote <- $$y_{i} = \beta_{0} + \beta_{1} age\_z + \beta_{2}male_i + \beta_{3}civic\_duty_i + \\ \beta_{4}hawthorne_i + \beta_{5}self_i + \beta_{6}neighbors_i + \\ \beta_{7}Sometimes\ vote_i + \beta_{8}Always\ vote_i + \\ \beta_{9}civic\_duty_i Sometimes\ vote_i + \beta_{10}hawthorne_i Sometimes\ vote_i + \\ \beta_{11}self_i Sometimes\ vote_i + \beta_{11}neighbors_i Sometimes\ vote_i + \\ \beta_{12}civic\_duty_i Always\ vote_i + \beta_{13}hawthorne_i Always\ vote_i + \\ \beta_{14}self_i Always\ vote_i + \beta_{15}neighbors_i Always\ vote_i + \epsilon_{i}$$
+
+```
+
